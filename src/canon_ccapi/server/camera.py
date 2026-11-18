@@ -1,27 +1,22 @@
+from canon_ccapi.server.profile import CameraProfile
 from canon_ccapi.models.device import DeviceInformation
 
 class VirtualCamera:
 
-    def __init__(self):
+    def __init__(self, profile: CameraProfile):
+        #self.device_information = device_information
+        self.profile = profile
 
-        self.device_information = DeviceInformation(
-            manufacturer="Canon",
-            productname="EOS R5",
-            guid="12345678",
-            serialnumber="123456789",
-            macaddress="00:00:00:00:00:00",
-            firmwareversion="2.0.0",
-        )
+    @property
+    def device_information(self) -> DeviceInformation:
+        return self.profile.resources.device_information
 
-    def get_device_information(self):
-        return {
-            "manufacturer": "Canon",
-            "productname": "Virtual Camera",
-            "guid": "12345678",
-            "serialnumber": "VIRTUAL001",
-            "macaddress": "00:00:00:00:00:00",
-            "firmwareversion": "1.0.0",
-        }
+#    @device_information.setter
+#    def device_information(self, value: DeviceInformation) -> None:
+#        self.profile.resources.device_information = value
 
-    def get_device_information(self):
-        return self.device_information
+#    def get_device_information(self):
+#        return self.device_information
+
+    def get_endpoints(self):
+        return self.profile.endpoints

@@ -7,9 +7,9 @@ from canon_ccapi.models.discovery import Discovery, EndpointInfo
 from canon_ccapi.models.devicestatus import Storage
 from urllib.parse import urlsplit
 from dataclasses import dataclass
-from canon_ccapi.protocol.normalizers.devicestatus import (
-    normalize_storage_status,
-)
+#from canon_ccapi.protocol.normalizers.devicestatus import (
+#    normalize_storage_status,
+#)
 
 @dataclass
 class DiscoveredEndpoint:
@@ -75,9 +75,9 @@ class CCAPIClient:
         self.http.close()
 
     def get_device_information(self) -> DeviceInformation:
-        response = self.client.get(
-            f"{self.base_url}/ver100/deviceinformation"
-        )
+        endpoint = self._find_get_endpoint("/deviceinformation")
+
+        response = self.client.get(endpoint.url)
         response.raise_for_status()
     
         return DeviceInformation.model_validate(response.json())
@@ -88,10 +88,13 @@ class CCAPIClient:
         response = self.client.get(endpoint.url)
         response.raise_for_status()
 
-        return normalize_storage_status(
-            endpoint.version,
-            response.json(),
-        )
+#        return normalize_storage_status(
+#            endpoint.version,
+#            response.json(),
+#        )
+        data = response.json()
+
+        return Storage.model_validate(data)
 
     def _find_get_endpoint(self, resource: str) -> DiscoveredEndpoint:
         if self.discovery is None:
@@ -99,7 +102,12 @@ class CCAPIClient:
     
         for version, endpoints in self.discovery.root.items():
             for endpoint in endpoints:
-                path = urlsplit(endpoint.url).path
+#                path = urlsplit(endpoint.url).path
+                endpoint_address = endpoint.url or endpoint.path
+                if not endpoint_address:
+                    raise ValueError("Discovery endpoint has neither url nor path")
+
+                path = urlsplit(endpoint_address).path
     
                 if path.endswith(resource) and endpoint.get:
                     base_path = urlsplit(self.base_url).path.rstrip("/")
@@ -121,11 +129,13 @@ class CCAPIClient:
         raise LookupError(f"No GET endpoint found for {resource}")
 
     def _resolve_endpoint(self, endpoint: EndpointInfo) -> str:
+    
+        if endpoint.url:
+            return endpoint.url
+    
         if endpoint.path:
             return f"http://{self.host}:{self.port}{endpoint.path}"
     
-        if endpoint.url:
-            parsed = urlsplit(endpoint.url)
-            return f"http://{self.host}:{self.port}{parsed.path}"
-    
-        raise ValueError("Discovery endpoint has neither url nor path")
+        raise ValueError(
+            "Discovery endpoint has neither url nor path"
+        )
