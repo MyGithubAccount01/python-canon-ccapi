@@ -1,0 +1,13 @@
+from pydantic import BaseModel
+
+class Copyright(BaseModel):
+    name: str #Copyright holder name
+
+class Author(BaseModel):
+    name: str #Author name
+
+class Owner(BaseModel):
+    name: str #Owner name
+
+class Nickname(BaseModel):
+    name: str #Nickname

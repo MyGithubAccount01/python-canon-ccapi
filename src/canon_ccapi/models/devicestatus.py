@@ -5,6 +5,14 @@ AccessCapability = Literal["readonly", "readwrite"]
 BatteryKind = Literal["battery", "not_inserted", "ac_adapter", "dc_coupler", "unknown", "batterygrip"]
 BatteryLevel = Literal["low", "quarter", "half", "high", "full", "unknown", "charge", "chargestop", "chargecomp", "none"]
 BatteryQuality = Literal["bad", "normal", "good","unknown"]
+BatteryPosition = Literal["camera", "grip01", "grip02"]
+TemperatureStatus = Literal["normal", "warning", "frameratedown", "disableliveview", "disablerelease", 
+                            "stillqualitywarning", "warning_and_restrictionmovierecording", "frameratedown_and_restrictionmovierecording", 
+                            "disableliveview_and_restrictionmovierecording", "disablerelease_and_restrictionmovierecording", 
+                            "stillqualitywarning_and_restrictionmovierecording"]
+PZSwitchState = Literal["pz", "mz", "none"]
+PZLocation = Literal["other", "wide", "middle", "tele", "none"]
+PZTemperature = Literal["normal", "warn", "stop"]
 
 class StorageList(BaseModel):
     # Fields based on actual CCAPI response
@@ -42,18 +50,27 @@ class Battery(BaseModel):
     level: str # Battery level. If empty, no battery is inserted.
     quality: str # Quality of the battery. If empty, no battery is inserted.
 
-class BatteryList(BaseModel):
+class BatteryList(Battery):
     # Fields based on actual CCAPI response
-    pass
+    position: BatteryPosition # Position of the battery. If empty, no battery is inserted.
 
 class Lens(BaseModel):
     # Fields based on actual CCAPI response
-    pass
+    mount: bool # Whether the lens is mounted or not
+    name: str # Name of the lens. If empty, no lens is mounted.
+
+class PowerZoom(BaseModel):
+    # Fields based on actual CCAPI response
+    status: bool # Status of the power zoom. True if active, False otherwise.
+    sw: PZSwitchState # Power zoom switch state.
+    moving: bool # Whether the power zoom is currently moving. True if moving, False otherwise.
+    location: PZLocation # Location of the power zoom. If empty, not available.
+    equip: bool # Whether the power zoom is equipped. True if equipped, False otherwise.
+    battery: bool # Whether the power zoom has a battery. True if it has a battery, False otherwise.
+    lock: bool # Whether the power zoom is locked. True if locked, False otherwise.
+    limit: bool # Whether the power zoom has reached its limit. True if at limit, False otherwise.
+    temperature: PZTemperature # Temperature status of the power zoom. If empty, not available.
 
 class Temperature(BaseModel):
     # Fields based on actual CCAPI response
-    pass
-
-class PowerZoomStatus(BaseModel):
-    # Fields based on actual CCAPI response
-    pass
+    status: TemperatureStatus # Status of the temperature. If empty, temperature is not available.
