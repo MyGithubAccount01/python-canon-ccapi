@@ -17,14 +17,11 @@ class MovieMode(BaseModel):
 class RecordButton(BaseModel):
     action: Literal["start", "stop"] #Movie recording status
 
-class ZoomAbility(BaseModel):
-    min: int #Minimum zoom value
-    max: int #Maximum zoom value
-    step: int #Zoom step value
+#class ZoomAbility(BaseModel):
+#    min: int #Minimum zoom value
+#    max: int #Maximum zoom value
+#    step: int #Zoom step value
 
-class Zoom(BaseModel):
-    value: int #Present value
-    ability: ZoomAbility #Zoom ability details
 
 class DriveFocus(BaseModel):
     value: Literal["near1", "near2", "near3", "far1", "far2", "far3"]
@@ -41,7 +38,3 @@ class HFFlickerDetection(BaseModel):
 
 class HFFlickerDetectionTV(BaseModel):
     value: Literal["decrement_large", "decrement_small", "increment_large", "increment_small"] #High-frequency flicker detection recommended Tv value
-
-class PowerZoom(BaseModel):
-    value: str #Present value
-    ability: Literal["stop", "wide", "tele"] #Ability values

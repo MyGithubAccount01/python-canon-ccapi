@@ -33,11 +33,6 @@ class StorageList(BaseModel):
 class Storage(BaseModel):
     storageList: list[StorageList] = Field(validation_alias="storagelist")
 
-class CurrentStorage(BaseModel):
-    # Fields based on actual CCAPI response
-    name: str # Name of the current storage. If empty media is not inserted.
-    path: str # Path of the current storage. If empty media is not inserted.
-
 class CurrentDirectory(BaseModel):
     # Fields based on actual CCAPI response
     name: str # Name of the current directory. If empty, no directory is selected.

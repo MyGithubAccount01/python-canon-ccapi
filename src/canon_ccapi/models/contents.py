@@ -44,12 +44,6 @@ ContentsModification = (
     | XMPDescriptionContents
 )
 
-class Contents(BaseModel):
-    url: list[str] #Storage URLs
-
-class Storage(BaseModel):
-    url: list[str] #Directory URLs
-
 class ContentURL(BaseModel):
     url: list[str] #Content URL
 

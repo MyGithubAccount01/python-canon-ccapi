@@ -43,18 +43,6 @@ class DateTime (BaseModel):
 class CardFormat(BaseModel):
     name: str #Card name
 
-class Beep(BaseModel):
-    value: BeepValue #Present value
-    ability: list[BeepValue] #List of supported values
-
-class DisplayOff(BaseModel):
-    value: DisplayOffValue #Present value
-    ability: list[DisplayOffValue] #List of supported values
-
-class AutoPowerOff(BaseModel):
-    value: AutoPowerOffValue #Present value
-    ability: list[AutoPowerOffValue] #List of supported values
-
 class SensorCleaning(BaseModel):
     auto_power_off: bool #Whether to perform auto power-off after sensor cleaning
 
@@ -66,14 +54,6 @@ In case of a Canon camer that only supports Wi-Fi, this API is not supported.
 Check the Canon camera used."""
 class NetworkSetting(RootModel[dict[str, list[EndpointInfo]]]):
     pass
-
-"""This gets the connection settings (SET) that are currently running and that can be changed.
-The only connection settings (SET) that can be changed are those initiated by CCAPI.
-In case of a Canon camera that only support Wi-Fi, this API is not supported. Check the Canon
-camera used."""
-class CurrentConnectionSetting(BaseModel):
-    value: NetworkConnectionSettings #Present value
-    ability: list[NetworkConnectionSettings] #Ability values
 
 """This gets the list of connection setting (SET) information saved in the Canon camera."""
 class ConnectionSetting(BaseModel):
@@ -130,41 +110,9 @@ class WIFISettingList(RootModel[dict[str, WIFISetting]]):
 class CommonName(BaseModel):
     commonname: str #Common name
 
-#Cross-Origin Resource Sharing (CORS) setting
-class CORSSetting(BaseModel):
-    value: CORSSettingValue
-    ability: list[CORSSettingValue] #Ability values
 
 class CORSOrigin(BaseModel):
     origin: str #CORS origin
-
-class StillMovieSeparate(BaseModel):
-    value: StillMovieSeparateValue
-    ability: list[StillMovieSeparateValue] #Ability values
-
-class StillImageRecordOption(BaseModel):
-    value: RecordOptions
-    ability: list[RecordOptions] #Ability values
-
-class MovieRecordOption(BaseModel):
-    value: RecordOptions
-    ability: list[RecordOptions] #Ability values
-
-class StillImage(BaseModel):
-    value: StorageOptions
-    ability: list[StorageOptions] #Ability values
-
-class MoveCardSelection(BaseModel):
-    value: StorageOptions
-    ability: list[StorageOptions] #Ability values
-
-class FanMode(BaseModel):
-    value: FanModeOptions
-    ability: list[FanModeOptions] #Ability values
-
-class FanSpeed(BaseModel):
-    value: FanSpeedOptions
-    ability: list[FanSpeedOptions] #Ability values
 
 class ConnectSetting(BaseModel):
     lantype: str #LAN type
@@ -185,24 +133,8 @@ class ConnectSetting(BaseModel):
     ether: str #Ethernet setting
     wifi: str #Wi-Fi setting
 
-class ScreenDimmer(BaseModel):
-    value: ScreenDimmerValue
-    ability: list[ScreenDimmerValue] #Ability values
-
-class ViewFinderOff(BaseModel):
-    value: ViewFinderValue
-    ability: list[ViewFinderValue] #Ability values
-
 class CreateDirectory(BaseModel):
     directoryname: str #Directory name
-
-class DirectorySelection(BaseModel):
-    value: str #Selected directory
-    ability: list[str] #Ability values
-
-class FilenameSelection(BaseModel):
-    value: str #Selected filename
-    ability: list[str] #Ability values
 
 class FilenameUsersetting1(BaseModel):
     usersetting1: str #User setting 1
@@ -212,19 +144,6 @@ class FilenameUsersetting1(BaseModel):
 
 class MovineIndex(BaseModel):
     index: str #Movie index
-
-class RangeAbility(BaseModel):
-    min: int
-    max: int
-    step: int
-
-class ReelNumber(BaseModel):
-    value: int
-    ability: RangeAbility
-
-class ClipNumber(BaseModel):
-    value: int
-    ability: RangeAbility
 
 class MoveNameUserDefined(BaseModel):
     userdefined: str #User defined move name
